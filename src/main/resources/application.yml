@@ -1,0 +1,28 @@
+spring:
+  log:
+    level: INFO
+logging:
+  file: ./logs/log.log
+---
+spring:
+  application:
+    name: api-gateway
+server:
+  port: 5500
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/,http://peer3:8763/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+zuul:
+  routes:
+    api-cust-behavior:
+      path: /cust-behavior/**
+      serviceId: cust-behavior
+    api-customize-life:
+      path: /customize-life/**
+      serviceId: customize-life
